@@ -14,9 +14,9 @@ import (
 )
 
 type TelemetryUpdate struct {
-	Timestamp time.Time
-	Type      string // "spo2", "pulse", or "waveform"
-	Value     int
+	Timestamp time.Time `json:"timestamp"`
+	Type      string    `json:"type"` // "spo2", "pulse", or "waveform"
+	Value     int       `json:"value"`
 }
 
 type GNMIServer struct {
@@ -33,6 +33,21 @@ func NewGNMIServer() *GNMIServer {
 }
 
 // Broadcast sends the update to all active gNMI subscriptions
+func (s *GNMIServer) UnsubscribeChan(ch chan TelemetryUpdate) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	delete(s.subscribers, ch)
+	close(ch)
+}
+
+func (s *GNMIServer) SubscribeChan() chan TelemetryUpdate {
+	ch := make(chan TelemetryUpdate, 100)
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.subscribers[ch] = struct{}{}
+	return ch
+}
+
 func (s *GNMIServer) Broadcast(update TelemetryUpdate) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()

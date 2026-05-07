@@ -26,6 +26,8 @@ func startForeground(targetMAC, targetName string) {
 		os.Exit(1)
 	}
 	
+	StartWebServer(8080, gnmiSrv)
+	
 	fmt.Println("📡 gNMI Streaming on port 9339")
 	fmt.Println("Connecting to device...")
 

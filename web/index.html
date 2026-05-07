@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oximon Telemetry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Oximon</h1>
+            <div id="status" class="status disconnected">Disconnected</div>
+        </header>
+
+        <main>
+            <div class="metrics-grid">
+                <div class="card spo2-card">
+                    <h2>SpO₂</h2>
+                    <div class="value-container">
+                        <span id="spo2-val">--</span>
+                        <span class="unit">%</span>
+                    </div>
+                </div>
+                <div class="card hr-card">
+                    <h2>Heart Rate</h2>
+                    <div class="value-container">
+                        <span id="hr-val">--</span>
+                        <span class="unit">bpm</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card waveform-card">
+                <h2>Plethysmograph Waveform</h2>
+                <div class="canvas-container">
+                    <canvas id="waveform-canvas"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
