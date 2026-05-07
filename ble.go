@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -28,6 +27,16 @@ func startForeground(targetMAC, targetName string) {
 	
 	StartWebServer(8080, gnmiSrv)
 	
+	// Handle Ctrl+C cleanly at the global level
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		<-c
+		fmt.Println("\nExiting...")
+		db.Close()
+		os.Exit(0)
+	}()
+	
 	fmt.Println("📡 gNMI Streaming on port 9339")
 	fmt.Println("Connecting to device...")
 
@@ -44,9 +53,6 @@ func startForeground(targetMAC, targetName string) {
 func connectAndListen(targetMAC, targetName string, db *DB, gnmiSrv *GNMIServer) error {
 	var targetDevice bluetooth.ScanResult
 	var found bool
-
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
 
 	err := adapter.Scan(func(a *bluetooth.Adapter, device bluetooth.ScanResult) {
 		if found {
@@ -133,16 +139,6 @@ func connectAndListen(targetMAC, targetName string, db *DB, gnmiSrv *GNMIServer)
 
 	fmt.Println("Notifications enabled. Waiting for data...")
 
-	// Wait for disconnection or interruption
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	select {
-	case <-ctx.Done():
-		// Context was only for scan timeout, we don't exit on it after connection
-	case <-c:
-		fmt.Println("\nExiting.")
-		os.Exit(0)
-	}
 	// Note: We don't have a great way to detect disconnects from tinygo.org/x/bluetooth right now
 	// without reading, but let's assume it exits or errors eventually, or we just block forever.
 	// Actually, if the device disconnects, the library usually doesn't cleanly notify us in a cross-platform way unless we poll.
