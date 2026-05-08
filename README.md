@@ -12,6 +12,7 @@ Development of **Oximon** has been motivated by the desire to integrate personal
 	* [Prerequisites](#prerequisites)
 	* [Installation](#installation)
 	* [Using the Daemon](#using-the-daemon)
+* [Native iOS App](#native-ios-app)
 * [Architecture](#architecture)
 * [Licensing](#licensing)
 
@@ -62,6 +63,18 @@ To run the logger continuously without blocking your terminal, use the `daemon` 
 $ ./oximon daemon -name "Innovo_Oxi"
 Daemon started with PID: 12345. Logs are in oximon.log
 ```
+
+### Native iOS App <a name="native-ios-app"></a>
+
+In addition to the Go daemon and Web UI, **Oximon** includes a native SwiftUI application for iOS. This app allows you to connect directly to your oximeter from your iPhone without requiring a running daemon or Mac.
+
+* **Direct BLE Connectivity**: Connects directly to the Innovo iP900BPB.
+* **Real-time Visualization**: High-fidelity plethysmograph waveforms and trend charts.
+* **Self-Contained**: No external dependencies or servers required.
+
+For more details on building and deploying the app, see the [iOS README](ios/README.md).
+
+![Oximon iOS Screenshot](ios/screenshot.png)
 
 #### Subscribing via gNMI
 **Oximon** natively streams its telemetry over a standard gNMI gRPC interface. You can use popular open-source tooling like [`gnmic`](https://gnmic.openconfig.net/) to subscribe to the data stream in real-time.
