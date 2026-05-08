@@ -53,7 +53,7 @@ $ ./oximon run -name "iP900BPB"
 
 You can then navigate to `http://localhost:8080` in your browser to view the real-time SpO2 and Pulse graphs.
 
-![Web UI Demo](assets/ui-demo.webp)
+![Web UI Demo](assets/ui-demo-final.webp)
 
 #### Running as a Background Daemon
 To run the logger continuously without blocking your terminal, use the `daemon` command. This will detach the process and write all standard output and logging to `oximon.log`.
