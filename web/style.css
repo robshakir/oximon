@@ -121,10 +121,48 @@ h1 {
     font-weight: 600;
 }
 
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -0.5rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+}
+
 .trend-container {
     width: 100%;
     height: 100px;
     margin-top: 0.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.histogram-container {
+    width: 100%;
+    height: 60px;
     border-radius: 0.5rem;
     overflow: hidden;
     position: relative;

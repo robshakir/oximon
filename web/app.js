@@ -7,9 +7,19 @@ const ctx = canvas.getContext('2d');
 
 const spo2Canvas = document.getElementById('spo2-canvas');
 const spo2Ctx = spo2Canvas.getContext('2d');
+const spo2Min = document.getElementById('spo2-min');
+const spo2Mean = document.getElementById('spo2-mean');
+const spo2Max = document.getElementById('spo2-max');
+const spo2HistCanvas = document.getElementById('spo2-hist-canvas');
+const spo2HistCtx = spo2HistCanvas.getContext('2d');
 
 const hrCanvas = document.getElementById('hr-canvas');
 const hrCtx = hrCanvas.getContext('2d');
+const hrMin = document.getElementById('hr-min');
+const hrMean = document.getElementById('hr-mean');
+const hrMax = document.getElementById('hr-max');
+const hrHistCanvas = document.getElementById('hr-hist-canvas');
+const hrHistCtx = hrHistCanvas.getContext('2d');
 
 let waveformData = [];
 const MAX_POINTS = 300; // How many points to show on screen for waveform
@@ -26,12 +36,19 @@ function resizeCanvas() {
     
     spo2Canvas.width = spo2Canvas.parentElement.clientWidth;
     spo2Canvas.height = spo2Canvas.parentElement.clientHeight;
+    spo2HistCanvas.width = spo2HistCanvas.parentElement.clientWidth;
+    spo2HistCanvas.height = spo2HistCanvas.parentElement.clientHeight;
     
     hrCanvas.width = hrCanvas.parentElement.clientWidth;
     hrCanvas.height = hrCanvas.parentElement.clientHeight;
+    hrHistCanvas.width = hrHistCanvas.parentElement.clientWidth;
+    hrHistCanvas.height = hrHistCanvas.parentElement.clientHeight;
     
     drawTrend(spo2Ctx, spo2Canvas, spo2Data, '#0ea5e9', 90, 100);
+    drawHistogram(spo2HistCtx, spo2HistCanvas, spo2Data, '#0ea5e9');
+    
     drawTrend(hrCtx, hrCanvas, hrData, '#ef4444', 50, 120);
+    drawHistogram(hrHistCtx, hrHistCanvas, hrData, '#ef4444');
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
@@ -78,6 +95,57 @@ function drawTrend(ctx, cnv, data, colour, defaultMin, defaultMax) {
     ctx.shadowBlur = 0;
 }
 
+function updateStats(data, minEl, meanEl, maxEl) {
+    if (data.length === 0) return;
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const mean = data.reduce((a, b) => a + b, 0) / data.length;
+    
+    minEl.textContent = min;
+    maxEl.textContent = max;
+    meanEl.textContent = Math.round(mean);
+}
+
+function drawHistogram(ctx, cnv, data, colour) {
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    if (data.length < 2) return;
+
+    const numBins = 15;
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    // Add small epsilon to range to avoid dividing by 0 if all values are identical
+    const range = (max - min) || 1; 
+    const binSize = range / numBins;
+    
+    const bins = new Array(numBins).fill(0);
+    for (let val of data) {
+        let binIndex = Math.floor((val - min) / binSize);
+        if (binIndex >= numBins) binIndex = numBins - 1;
+        bins[binIndex]++;
+    }
+
+    const maxCount = Math.max(...bins) || 1;
+    const barWidth = cnv.width / numBins;
+
+    ctx.fillStyle = colour;
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = colour.replace(')', ', 0.3)').replace('rgb', 'rgba');
+    if (colour.startsWith('#')) {
+        ctx.shadowColor = colour + '40';
+    }
+
+    for (let i = 0; i < numBins; i++) {
+        const barHeight = (bins[i] / maxCount) * cnv.height * 0.9; // max 90% of height
+        if (barHeight === 0) continue;
+        
+        const x = i * barWidth;
+        const y = cnv.height - barHeight;
+        
+        ctx.fillRect(x + 1, y, barWidth - 2, barHeight);
+    }
+    ctx.shadowBlur = 0;
+}
+
 function connect() {
     const wsProto = location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${wsProto}//${location.host}/ws`);
@@ -101,11 +169,15 @@ function connect() {
             spo2Data.push(data.value);
             if (spo2Data.length > TREND_POINTS) spo2Data.shift();
             drawTrend(spo2Ctx, spo2Canvas, spo2Data, '#0ea5e9', 90, 100);
+            updateStats(spo2Data, spo2Min, spo2Mean, spo2Max);
+            drawHistogram(spo2HistCtx, spo2HistCanvas, spo2Data, '#0ea5e9');
         } else if (data.type === 'pulse') {
             hrEl.textContent = data.value;
             hrData.push(data.value);
             if (hrData.length > TREND_POINTS) hrData.shift();
             drawTrend(hrCtx, hrCanvas, hrData, '#ef4444', 50, 120);
+            updateStats(hrData, hrMin, hrMean, hrMax);
+            drawHistogram(hrHistCtx, hrHistCanvas, hrData, '#ef4444');
             
             // Briefly add class to trigger heartbeat animation
             const hrCard = document.querySelector('.hr-card');
