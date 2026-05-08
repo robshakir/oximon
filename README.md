@@ -33,6 +33,7 @@ $ go build -o oximon .
 
 The `oximon` binary provides a simple CLI to interact with your Bluetooth environment. 
 
+
 #### Scanning for Devices
 Before connecting, you can scan your local area to find the MAC address or local name of your oximeter:
 ```bash
@@ -42,13 +43,17 @@ Found device: Innovo_Oxi [XX:XX:XX:XX:XX:XX] RSSI: -50
 ```
 
 #### Running in the Foreground
-Once you have the target name or MAC address, you can start the data logger in the foreground. This will initialise the SQLite database, spin up the gNMI gRPC server on port `9339`, and start the Web UI on port `8080`.
+To start the data logger in the foreground and stream telemetry from the oximeter, use the `run` command. This will initialise the SQLite database, spin up the gNMI gRPC server on port `9339`, and start the Web UI on port `8080`.
 
 ```bash
-$ ./oximon run -name "Innovo_Oxi"
+$ ./oximon run -name "iP900BPB"
 ```
 
+![Terminal Output](assets/terminal.gif)
+
 You can then navigate to `http://localhost:8080` in your browser to view the real-time SpO2 and Pulse graphs.
+
+![Web UI Demo](assets/ui-demo.webp)
 
 #### Running as a Background Daemon
 To run the logger continuously without blocking your terminal, use the `daemon` command. This will detach the process and write all standard output and logging to `oximon.log`.
