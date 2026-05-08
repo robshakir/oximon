@@ -126,24 +126,37 @@ function drawHistogram(ctx, cnv, data, colour) {
 
     const maxCount = Math.max(...bins) || 1;
     const barWidth = cnv.width / numBins;
-
-    ctx.fillStyle = colour;
-    ctx.shadowBlur = 5;
-    ctx.shadowColor = colour.replace(')', ', 0.3)').replace('rgb', 'rgba');
-    if (colour.startsWith('#')) {
-        ctx.shadowColor = colour + '40';
-    }
+    const bottomPadding = 15;
+    const maxBarHeight = cnv.height - bottomPadding;
 
     for (let i = 0; i < numBins; i++) {
-        const barHeight = (bins[i] / maxCount) * cnv.height * 0.9; // max 90% of height
-        if (barHeight === 0) continue;
+        const barHeight = (bins[i] / maxCount) * maxBarHeight * 0.9;
         
-        const x = i * barWidth;
-        const y = cnv.height - barHeight;
+        if (barHeight > 0) {
+            ctx.fillStyle = colour;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = colour.replace(')', ', 0.3)').replace('rgb', 'rgba');
+            if (colour.startsWith('#')) {
+                ctx.shadowColor = colour + '40';
+            }
+            
+            const x = i * barWidth;
+            const y = cnv.height - bottomPadding - barHeight;
+            ctx.fillRect(x + 1, y, barWidth - 2, barHeight);
+        }
         
-        ctx.fillRect(x + 1, y, barWidth - 2, barHeight);
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        
+        // Label the first, middle, and last bin
+        if (i === 0 || i === Math.floor(numBins/2) || i === numBins - 1) {
+            const binValue = Math.round(min + (i * binSize));
+            const x = (i * barWidth) + (barWidth / 2);
+            ctx.fillText(binValue.toString(), x, cnv.height - 2);
+        }
     }
-    ctx.shadowBlur = 0;
 }
 
 function connect() {
