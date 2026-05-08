@@ -21,7 +21,7 @@ func runDaemon(ctx context.Context, targetMAC, targetName string) {
 		args = append(args, "-mac", targetMAC)
 	}
 
-	cmd := exec.CommandContext(ctx, os.Args[0], args...)
+	cmd := exec.Command(os.Args[0], args...)
 
 	logFile, err := os.OpenFile("oximon.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
