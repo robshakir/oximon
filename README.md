@@ -58,6 +58,17 @@ $ ./oximon daemon -name "Innovo_Oxi"
 Daemon started with PID: 12345. Logs are in oximon.log
 ```
 
+#### Subscribing via gNMI
+**Oximon** natively streams its telemetry over a standard gNMI gRPC interface. You can use popular open-source tooling like [`gnmic`](https://gnmic.openconfig.net/) to subscribe to the data stream in real-time.
+
+To subscribe to all metric updates (SpO2, Pulse, and the high-frequency waveform) directly from your terminal:
+
+```bash
+$ gnmic -a localhost:9339 --insecure subscribe --path /oximeter/state/
+```
+
+This will output structured JSON updates each time a new telemetry value is broadcast by the daemon.
+
 ## Architecture <a name="architecture"></a>
 
 The **Oximon** codebase adheres strictly to Google Go style guidelines and OpenConfig idioms:
