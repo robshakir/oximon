@@ -15,17 +15,18 @@ var upgrader = websocket.Upgrader{
 }
 
 func StartWebServer(port int, gnmiSrv *GNMIServer) {
+	mux := http.NewServeMux()
 	fs := http.FileServer(http.Dir("./web"))
-	http.Handle("/", fs)
+	mux.Handle("/", fs)
 
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		wsHandler(w, r, gnmiSrv)
 	})
 
 	addr := fmt.Sprintf(":%d", port)
 	fmt.Printf("🌐 Web UI listening on http://localhost%s\n", addr)
 	go func() {
-		err := http.ListenAndServe(addr, nil)
+		err := http.ListenAndServe(addr, mux)
 		if err != nil {
 			log.Fatalf("Web server failed: %v", err)
 		}
