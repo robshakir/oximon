@@ -34,7 +34,7 @@ type waveform struct {
 	amplitude int
 }
 
-// InitDB initializes the SQLite database at the specified path, configures
+// InitDB initialises the SQLite database at the specified path, configures
 // its schema, and returns a pointer to the DB struct.
 func InitDB(path string) (*DB, error) {
 	db, err := sql.Open("sqlite", path)
@@ -59,7 +59,7 @@ func InitDB(path string) (*DB, error) {
 		);
 	`)
 	if err != nil {
-		return nil, fmt.Errorf("failed to initialize db schema: %w", err)
+		return nil, fmt.Errorf("failed to initialise db schema: %w", err)
 	}
 
 	return &DB{

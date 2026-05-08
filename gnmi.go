@@ -163,7 +163,7 @@ func StartGRPCServer(port int, srv *GNMIServer) error {
 
 	go func() {
 		if err := g.Serve(lis); err != nil {
-			klog.Errorf("grpc server failed: %v", err)
+			klog.Errorf("gRPC server failed: %v", err)
 		}
 	}()
 	return nil

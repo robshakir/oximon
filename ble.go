@@ -70,12 +70,12 @@ func ParsePacket(buf []byte) ParsedPacket {
 	return ParsedPacket{Type: PacketUnknown}
 }
 
-// startForeground initializes the daemon subsystems and blocks, streaming
+// startForeground initialises the daemon subsystems and blocks, streaming
 // data from the Bluetooth device until interrupted.
 func startForeground(ctx context.Context, targetMAC, targetName string) {
 	db, err := InitDB("oximon.db")
 	if err != nil {
-		klog.Fatalf("failed to initialize db: %v", err)
+		klog.Fatalf("failed to initialise db: %v", err)
 	}
 	defer db.Close()
 	db.StartWorker(ctx)

@@ -3,7 +3,7 @@
  * Automatically discover and connect to Bluetooth LE oximeters.
  * Persist high-frequency waveforms and SpO2/Pulse readings into a local SQLite database for historical analysis.
  * Stream real-time telemetry out of the daemon via a standard gNMI gRPC interface.
- * Visualize live 50Hz plethysmograph waveforms and historical trends via a built-in WebSocket-driven Canvas Web UI.
+ * Visualise live 50Hz plethysmograph waveforms and historical trends via a built-in WebSocket-driven Canvas Web UI.
 
 Development of **Oximon** has been motivated by the desire to integrate personal medical devices into robust, open-source telemetry pipelines (like OpenConfig/gNMI) while maintaining a lightweight, dependency-free local dashboard. 
 
@@ -42,7 +42,7 @@ Found device: Innovo_Oxi [XX:XX:XX:XX:XX:XX] RSSI: -50
 ```
 
 #### Running in the Foreground
-Once you have the target name or MAC address, you can start the data logger in the foreground. This will initialize the SQLite database, spin up the gNMI gRPC server on port `9339`, and start the Web UI on port `8080`.
+Once you have the target name or MAC address, you can start the data logger in the foreground. This will initialise the SQLite database, spin up the gNMI gRPC server on port `9339`, and start the Web UI on port `8080`.
 
 ```bash
 $ ./oximon run -name "Innovo_Oxi"

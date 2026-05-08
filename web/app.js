@@ -36,7 +36,7 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-function drawTrend(ctx, cnv, data, color, defaultMin, defaultMax) {
+function drawTrend(ctx, cnv, data, colour, defaultMin, defaultMax) {
     ctx.clearRect(0, 0, cnv.width, cnv.height);
     if (data.length < 2) return;
 
@@ -49,7 +49,7 @@ function drawTrend(ctx, cnv, data, color, defaultMin, defaultMax) {
     const stepX = cnv.width / TREND_POINTS;
 
     ctx.beginPath();
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = colour;
     ctx.lineWidth = 3;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -57,8 +57,8 @@ function drawTrend(ctx, cnv, data, color, defaultMin, defaultMax) {
     for (let i = 0; i < data.length; i++) {
         // Draw from right to left (newest on the right)
         const x = cnv.width - ((data.length - 1 - i) * stepX);
-        const normalizedY = (data[i] - min) / range;
-        const y = cnv.height - (normalizedY * cnv.height * 0.8) - (cnv.height * 0.1);
+        const normalisedY = (data[i] - min) / range;
+        const y = cnv.height - (normalisedY * cnv.height * 0.8) - (cnv.height * 0.1);
 
         if (i === 0) {
             ctx.moveTo(x, y);
@@ -69,9 +69,9 @@ function drawTrend(ctx, cnv, data, color, defaultMin, defaultMax) {
     
     // Add glow effect
     ctx.shadowBlur = 10;
-    ctx.shadowColor = color.replace(')', ', 0.5)').replace('rgb', 'rgba'); // simple hack for hex glow
-    if (color.startsWith('#')) {
-        ctx.shadowColor = color + '80'; // hex transparency
+    ctx.shadowColor = colour.replace(')', ', 0.5)').replace('rgb', 'rgba'); // simple hack for hex glow
+    if (colour.startsWith('#')) {
+        ctx.shadowColor = colour + '80'; // hex transparency
     }
     
     ctx.stroke();
@@ -148,8 +148,8 @@ function drawWaveform() {
     for (let i = 0; i < waveformData.length; i++) {
         const x = i * stepX;
         // Invert Y since canvas 0 is top
-        const normalizedY = (waveformData[i] - min) / range;
-        const y = canvas.height - (normalizedY * canvas.height * 0.8) - (canvas.height * 0.1);
+        const normalisedY = (waveformData[i] - min) / range;
+        const y = canvas.height - (normalisedY * canvas.height * 0.8) - (canvas.height * 0.1);
 
         if (i === 0) {
             ctx.moveTo(x, y);

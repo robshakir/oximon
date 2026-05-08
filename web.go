@@ -15,7 +15,7 @@ var wsUpgrader = websocket.Upgrader{
 	},
 }
 
-// StartWebServer initializes an HTTP server on the specified port. It serves
+// StartWebServer initialises an HTTP server on the specified port. It serves
 // static assets for the UI and sets up a WebSocket endpoint that streams gNMI telemetry.
 func StartWebServer(port int, gnmiSrv *GNMIServer) {
 	mux := http.NewServeMux()
