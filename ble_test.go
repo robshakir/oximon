@@ -2,8 +2,11 @@ package main
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
+// TestParsePacket validates the extraction logic for raw BLE payloads.
 func TestParsePacket(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -44,18 +47,9 @@ func TestParsePacket(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := ParsePacket(tt.payload)
-			if result.Type != tt.expected.Type {
-				t.Errorf("Expected type %v, got %v", tt.expected.Type, result.Type)
-			}
-			if result.Amplitude != tt.expected.Amplitude {
-				t.Errorf("Expected amplitude %v, got %v", tt.expected.Amplitude, result.Amplitude)
-			}
-			if result.SpO2 != tt.expected.SpO2 {
-				t.Errorf("Expected SpO2 %v, got %v", tt.expected.SpO2, result.SpO2)
-			}
-			if result.Pulse != tt.expected.Pulse {
-				t.Errorf("Expected Pulse %v, got %v", tt.expected.Pulse, result.Pulse)
+			got := ParsePacket(tt.payload)
+			if diff := cmp.Diff(tt.expected, got); diff != "" {
+				t.Errorf("ParsePacket() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

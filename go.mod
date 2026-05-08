@@ -3,18 +3,21 @@ module github.com/robshakir/oximon
 go 1.25.0
 
 require (
+	github.com/google/go-cmp v0.7.0
+	github.com/gorilla/websocket v1.5.3
 	github.com/openconfig/gnmi v0.14.1
 	google.golang.org/grpc v1.81.0
+	k8s.io/klog/v2 v2.140.0
 	modernc.org/sqlite v1.50.0
 	tinygo.org/x/bluetooth v0.15.0
 )
 
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
+	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
