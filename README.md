@@ -1,4 +1,4 @@
-**Oximon** is a Go-based macOS background daemon that captures, persists, and streams real-time telemetry from Innovo Bluetooth oximeters (specifically the `iP900BPB`). The daemon acts as a central hub for health data, allowing you to directly interact with your Bluetooth medical devices. Particularly, **Oximon** will allow you to:
+**Oximon** is a Go-based macOS background daemon that captures, persists, and streams real-time telemetry from Innovo Bluetooth oximeters (specifically the [iP900BPB](https://innovomedical.com/product/innovo-ip900bp-b-bluetooth-fingertip-pulse-oximeter/)). The daemon acts as a central hub for health data, allowing you to directly interact with your Bluetooth medical devices. Particularly, **Oximon** will allow you to:
 
  * Automatically discover and connect to Bluetooth LE oximeters.
  * Persist high-frequency waveforms and SpO2/Pulse readings into a local SQLite database for historical analysis.
